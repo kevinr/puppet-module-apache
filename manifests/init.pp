@@ -77,6 +77,7 @@ class apache {
       require => Package["apache"];
     "apache.conf":
       path => "${apache_conf_dir}/${apache_conf_file}",
+      owner => 'root', group => 'root', mode => 0644,
       source => "puppet:///apache/apache.conf",
       require => File["apache::config_dir"],
       notify => Service["apache"];
@@ -96,12 +97,6 @@ class apache {
       ensure => directory,
       checksum => "mtime",
       notify => Service["apache"];
-  }
-
-  apache::config {
-    "ports":
-      content => "Listen ${apache_listen_address}:${apache_listen_port}\n",
-      order => "000";
   }
 
   service {
